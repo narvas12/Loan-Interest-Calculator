@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Loan Calculator</title>
+    <style>
+        body {
+            background-color: rgb(224, 108, 108);
+            color: #fff;
+            margin: 0;
+            display: flex;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+
+        }
+
+        #calc-container {
+            background-color: rgb(155, 6, 6);
+            border-radius: 5px;
+            padding: 2rem 3rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 1rem;
+        }
+
+        #form-control {
+            margin: 0.75rem 0;
+        }
+
+        #form-control input {
+            padding: 0.25rem;
+            width: 100%;
+        }
+
+        #form-control label {
+            display: block;
+        }
+
+        #calc-container footer {
+            margin-top: 2rem;
+        }
+
+        #result {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="calc-container">
+        <h1>Loan Calculator</h1>
+        <p>Automatic Interest Calculator</p>
+        <div id="form-control">
+            <label for="bill">Loan in (N)</label>
+            <input type="number" id="bill-value" placeholder="100" value="100" min="1">
+        </div>
+
+        <div id="form-control">
+            <label for="Interest">Interest (%)</label>
+            <input type="number" id="interest-value" placeholder="10" value="10" min="1">
+        </div>
+
+        <div id="form-control">
+            <label for="people">Number of Pople</label>
+            <input type="number" id="people" placeholder="1" value="2" min="1">
+        </div>
+
+        <div id="form-control">
+            <label for="Duration">Loan Repayment Duration (Months)</label>
+            <input type="number" id="loan-duration-el" placeholder="6" value="3" min="3">
+        </div>
+
+        <footer>
+            <div id="result">
+                <span>Total------------</span><strong id="total"></strong>
+            </div>
+
+            <div id="result">
+                <span>Interest Per Person =</span><strong id="Interest-per-person"></strong>
+            </div>
+
+            <div id="result">
+                <span>Total Debt Per Person=</span><strong id="total-per-person"></strong>
+            </div>
+
+            <div id="result">
+                <span>Amounth Payable Per Month=</span><strong id="amounth-per-month"></strong>
+            </div>
+        </footer>
+    </div>
+    <script src="loan-interest-calc.js">
+        const interestEl   = document.getElementById("interest-value")
+const billEl       = document.getElementById("bill-value")
+const totalEl      = document.getElementById('total')
+
+const peopleEl        = document.getElementById('people')
+const tipPerPerson    = document.getElementById('Interest-per-person')
+const totalPerPerson  = document.getElementById('total-per-person')
+const loanDuration    = document.getElementById('loan-duration-el')
+const amounthPerMonth = document.getElementById('amounth-per-month')
+
+
+interestEl.addEventListener("input", calculate)
+
+billEl.addEventListener("input", calculate)
+
+loanDuration.addEventListener('input', calculate)
+
+
+peopleEl.addEventListener("input", function() {
+    if (peopleEl.value < 0){
+        peopleEl = 1
+    } 
+    calculate()
+})
+
+
+function calculate(){
+    let billValue       = +billEl.value
+    let InterestValue   = +interestEl.value
+    let totalPeople     = +peopleEl.value
+    let LoanDuration    = +loanDuration.value
+
+    let interestValue   = (billValue * InterestValue / 100)
+    let totalValue      = billValue + interestValue
+    let TotalPerPerson  = totalValue / totalPeople 
+    let TipPerPerson    = interestValue / totalPeople
+    let AmounthPerMonth =  (TotalPerPerson + 0.1) / LoanDuration
+
+    tipPerPerson.textContent    = `[N${TipPerPerson.toFixed(2)}]`
+    totalPerPerson.textContent  = `[N${TotalPerPerson.toFixed(2)}]`
+    totalEl.textContent         = `[N${totalValue.toFixed(2)}]`
+    amounthPerMonth.textContent = `[N${AmounthPerMonth.toFixed(2)}]`
+}
+alert(`AUTOMATIC INTEREST CALCULATOR
+        press ok to continue`)
+
+// function TipAmount(){
+//     tipEl.textContent = tipAmount
+//     calculate()
+// }
+    </script>
+</body>
+
+</html>
